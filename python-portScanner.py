@@ -12,9 +12,16 @@ def portScan(port):
         sock.settimeout(1)
         sock.connect((target, port))
         sock.close()
+        try:
+            banner = sock.recv(1024).decode().strip()
+            sock.close()
+            return True, banner
+        except:
+            sock.close()
+            return True, "No banner"
         return True
     except:
-        return False
+        return False, None
 
 def fillQueue(portList):
     for port in portList:
@@ -42,3 +49,12 @@ for thread in thread_list:
     thread.join()
 
 print("Open ports are:", openPorts)
+
+with open('scan_results.txt', 'w') as f:
+    f.write(f"Target: {target}\n")
+    f.write(f"Open ports found: {len(openPorts)}\n")
+    f.write("-" * 30 + "\n")
+    for port in openPorts:
+        f.write(f"Port {port} is open\n")
+
+print("Results saved to scan_results.txt")
