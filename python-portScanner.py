@@ -35,10 +35,10 @@ def worker():
             openPorts.append(port)
 
 port_list = range(1, 1024)
-fillQueue(port_list)  # ← FIX: Actually fill the queue
+fillQueue(port_list)
 thread_list = []
 
-for t in range(50):  # ← FIX: Reduced from 500
+for t in range(50):
     thread = threading.Thread(target=worker)
     thread_list.append(thread)
 
